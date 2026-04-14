@@ -1,8 +1,10 @@
 asgiref==3.10.0
 Django==5.2.7
 django-crispy-forms==2.4
+gunicorn==25.3.0
 joblib==1.5.2
 numpy==2.3.3
+packaging==26.1
 pandas==2.3.3
 python-dateutil==2.9.0.post0
 pytz==2025.2
