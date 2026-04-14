@@ -1,0 +1,211 @@
+{% extends 'portfolio/base.html' %}
+{% load math_filters %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="mb-0"><i class="fas fa-star me-2 text-warning"></i>Investment Recommendations</h2>
+            <a href="{% url 'analyze_portfolio' %}" class="btn btn-primary">
+                <i class="fas fa-redo me-2"></i>New Analysis
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Portfolio Summary -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-3 text-center">
+                        <h6 class="text-muted">Investment Amount</h6>
+                        <h4 class="text-success">₹{{ investment.amount }}</h4>
+                    </div>
+                    <div class="col-md-3 text-center">
+                        <h6 class="text-muted">Time Horizon</h6>
+                        <h4 class="text-primary">{{ user_profile.time_horizon }} years</h4>
+                    </div>
+                    <div class="col-md-3 text-center">
+                        <h6 class="text-muted">Risk Profile</h6>
+                        <span class="risk-badge risk-{{ user_profile.risk_tolerance }}">{{ user_profile.risk_tolerance|title }}</span>
+                    </div>
+                    <div class="col-md-3 text-center">
+                        <h6 class="text-muted">Expected CAGR</h6>
+                        <h4 class="text-info">{{ investment.expected_returns.expected_cagr|multiply:100|floatformat:1 }}%</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Investment Recommendations -->
+<div class="row">
+    <!-- Equity Recommendations -->
+    <div class="col-md-6 mb-4">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0"><i class="fas fa-chart-line me-2"></i>Equity Funds ({{ investment.allocation_data.equity }}%)</h5>
+            </div>
+            <div class="card-body">
+                {% for fund in recommendation.equity_recommendations %}
+                <div class="card mb-3 border">
+                    <div class="card-body">
+                        <h6 class="card-title text-primary">{{ fund.name }}</h6>
+                        <p class="card-text small text-muted">{{ fund.description }}</p>
+                        <div class="row">
+                            <div class="col-6">
+                                <small class="text-muted">Type:</small>
+                                <br><strong>{{ fund.type }}</strong>
+                            </div>
+                            <div class="col-6">
+                                <small class="text-muted">Expected Returns:</small>
+                                <br><strong class="text-success">{{ fund.returns }}</strong>
+                            </div>
+                        </div>
+                        <div class="mt-2">
+                            <span class="badge {% if fund.risk == 'Low' %}bg-success{% elif fund.risk == 'Medium' %}bg-warning{% else %}bg-danger{% endif %}">
+                                Risk: {{ fund.risk }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Debt Recommendations -->
+    <div class="col-md-6 mb-4">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-header bg-success text-white">
+                <h5 class="mb-0"><i class="fas fa-shield-alt me-2"></i>Debt Funds ({{ investment.allocation_data.bonds }}%)</h5>
+            </div>
+            <div class="card-body">
+                {% for fund in recommendation.debt_recommendations %}
+                <div class="card mb-3 border">
+                    <div class="card-body">
+                        <h6 class="card-title text-success">{{ fund.name }}</h6>
+                        <p class="card-text small text-muted">{{ fund.description }}</p>
+                        <div class="row">
+                            <div class="col-6">
+                                <small class="text-muted">Type:</small>
+                                <br><strong>{{ fund.type }}</strong>
+                            </div>
+                            <div class="col-6">
+                                <small class="text-muted">Expected Returns:</small>
+                                <br><strong class="text-success">{{ fund.returns }}</strong>
+                            </div>
+                        </div>
+                        <div class="mt-2">
+                            <span class="badge {% if fund.risk == 'Low' %}bg-success{% elif fund.risk == 'Medium' %}bg-warning{% else %}bg-danger{% endif %}">
+                                Risk: {{ fund.risk }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Gold & Cash Recommendations -->
+    <div class="col-md-6 mb-4">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-header bg-warning text-white">
+                <h5 class="mb-0"><i class="fas fa-gem me-2"></i>Gold ({{ investment.allocation_data.gold }}%)</h5>
+            </div>
+            <div class="card-body">
+                {% for fund in recommendation.gold_recommendations %}
+                <div class="card mb-3 border">
+                    <div class="card-body">
+                        <h6 class="card-title text-warning">{{ fund.name }}</h6>
+                        <p class="card-text small text-muted">{{ fund.description }}</p>
+                        <div class="row">
+                            <div class="col-6">
+                                <small class="text-muted">Type:</small>
+                                <br><strong>{{ fund.type }}</strong>
+                            </div>
+                            <div class="col-6">
+                                <small class="text-muted">Expected Returns:</small>
+                                <br><strong class="text-success">{{ fund.returns }}</strong>
+                            </div>
+                        </div>
+                        <div class="mt-2">
+                            <span class="badge bg-success">Risk: {{ fund.risk }}</span>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 mb-4">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-header bg-info text-white">
+                <h5 class="mb-0"><i class="fas fa-piggy-bank me-2"></i>Cash & Liquid ({{ investment.allocation_data.cash }}%)</h5>
+            </div>
+            <div class="card-body">
+                {% for fund in recommendation.cash_recommendations %}
+                <div class="card mb-3 border">
+                    <div class="card-body">
+                        <h6 class="card-title text-info">{{ fund.name }}</h6>
+                        <p class="card-text small text-muted">{{ fund.description }}</p>
+                        <div class="row">
+                            <div class="col-6">
+                                <small class="text-muted">Type:</small>
+                                <br><strong>{{ fund.type }}</strong>
+                            </div>
+                            <div class="col-6">
+                                <small class="text-muted">Expected Returns:</small>
+                                <br><strong class="text-success">{{ fund.returns }}</strong>
+                            </div>
+                        </div>
+                        <div class="mt-2">
+                            <span class="badge bg-success">Risk: {{ fund.risk }}</span>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- AI Insights -->
+<div class="row">
+    <div class="col-12">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-dark text-white">
+                <h5 class="mb-0"><i class="fas fa-robot me-2"></i>AI-Powered Investment Insights</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    {% for insight in recommendation.insights %}
+                    <div class="col-md-6 mb-3">
+                        <div class="card bg-light border-0">
+                            <div class="card-body">
+                                <p class="mb-0">{{ insight }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Action Buttons -->
+<div class="text-center mt-4">
+    <button class="btn btn-success me-2" onclick="window.print()">
+        <i class="fas fa-print me-2"></i>Print Report
+    </button>
+    <a href="{% url 'analyze_portfolio' %}" class="btn btn-primary">
+        <i class="fas fa-redo me-2"></i>New Analysis
+    </a>
+</div>
+{% endblock %}

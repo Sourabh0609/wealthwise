@@ -1,0 +1,92 @@
+{% extends 'portfolio/base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow-lg border-0">
+            <div class="card-header gradient-bg text-white py-4">
+                <h3 class="mb-0"><i class="fas fa-user-cog me-2"></i>Investment Profile</h3>
+            </div>
+            <div class="card-body p-5">
+                <form method="POST">
+                    {% csrf_token %}
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="id_age" class="form-label">Age</label>
+                                {{ form.age }}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="id_annual_income" class="form-label">Annual Income (₹)</label>
+                                {{ form.annual_income }}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="id_risk_tolerance" class="form-label">Risk Tolerance</label>
+                                {{ form.risk_tolerance }}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="id_investment_goal" class="form-label">Investment Goal</label>
+                                {{ form.investment_goal }}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="id_time_horizon" class="form-label">Time Horizon (years)</label>
+                        {{ form.time_horizon }}
+                    </div>
+                    
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary btn-lg mt-4">
+                            <i class="fas fa-save me-2"></i>Save Profile
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Risk Profile Info -->
+        <div class="card mt-4 border-0 shadow-sm">
+            <div class="card-body">
+                <h5><i class="fas fa-info-circle text-primary me-2"></i>Understanding Risk Profiles</h5>
+                <div class="row mt-3">
+                    <div class="col-md-4">
+                        <div class="card bg-light">
+                            <div class="card-body text-center">
+                                <span class="risk-badge risk-conservative">Conservative</span>
+                                <p class="mt-2 mb-0 small">Low risk, stable returns. Suitable for short-term goals and risk-averse investors.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card bg-light">
+                            <div class="card-body text-center">
+                                <span class="risk-badge risk-moderate">Moderate</span>
+                                <p class="mt-2 mb-0 small">Balanced approach. Mix of growth and stability. Ideal for medium-term goals.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card bg-light">
+                            <div class="card-body text-center">
+                                <span class="risk-badge risk-aggressive">Aggressive</span>
+                                <p class="mt-2 mb-0 small">High growth potential with higher risk. Best for long-term wealth creation.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
