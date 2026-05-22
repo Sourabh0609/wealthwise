@@ -8,7 +8,10 @@ SECRET_KEY = 'django-insecure-your-secret-key-here'
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
-STATIC_ROOT = BASE_DIR / "staticfiles"
+
+
+STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # INSTALLED_APPS with crispy forms
 INSTALLED_APPS = [
@@ -23,6 +26,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
