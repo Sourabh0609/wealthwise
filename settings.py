@@ -8,6 +8,7 @@ SECRET_KEY = 'django-insecure-your-secret-key-here'
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
 # INSTALLED_APPS with crispy forms
 INSTALLED_APPS = [
