@@ -1,14 +1,15 @@
 {
+  "version": 2,
   "builds": [
     {
-      "src": "wealthwise/wsgi.py",
+      "src": "manage.py",
       "use": "@vercel/python"
     }
   ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "wealthwise/wsgi.py"
+      "dest": "manage.py"
     }
   ]
 }
